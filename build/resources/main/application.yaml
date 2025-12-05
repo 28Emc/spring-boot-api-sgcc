@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: sgcc-api
+  profiles:
+    active: dev       # Change to 'prod' for production environment
+
+server:
+  port: 8080
+  servlet:
+    context-path: /sgcc
+
+springdoc:
+  api-docs:
+    path: /v1/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
