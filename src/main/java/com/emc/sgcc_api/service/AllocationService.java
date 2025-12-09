@@ -1,9 +1,11 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.AllocationCreateDto;
 import com.emc.sgcc_api.dto.AllocationResponseDto;
 import com.emc.sgcc_api.dto.AllocationUpdateDto;
 import com.emc.sgcc_api.entity.Allocation;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.mapper.AllocationMapper;
 import com.emc.sgcc_api.repository.AllocationRepository;
 import com.emc.sgcc_api.repository.InvoiceRepository;
@@ -37,6 +39,7 @@ public class AllocationService {
                 .orElseThrow(() -> new EntityNotFoundException("Allocation not found")));
     }
 
+    @Auditable(entity = "Allocation", action = AuditAction.CREATE)
     public AllocationResponseDto create(AllocationCreateDto dto) {
         var invoice = invoiceRepository.findById(dto.getInvoiceId())
                 .orElseThrow(() -> new EntityNotFoundException("Invoice not found"));
@@ -60,6 +63,7 @@ public class AllocationService {
         return mapper.toResponse(allocationRepository.save(allocation));
     }
 
+    @Auditable(entity = "Allocation", action = AuditAction.UPDATE)
     public AllocationResponseDto update(Long id, AllocationUpdateDto dto) {
         Allocation existing = allocationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Allocation not found"));
@@ -81,6 +85,7 @@ public class AllocationService {
         return mapper.toResponse(allocationRepository.save(existing));
     }
 
+    @Auditable(entity = "Allocation", action = AuditAction.DELETE)
     public void delete(Long id) {
         allocationRepository.deleteById(id);
     }

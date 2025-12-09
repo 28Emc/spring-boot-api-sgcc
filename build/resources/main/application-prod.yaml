@@ -32,3 +32,10 @@ logging:
     root: INFO
     org.hibernate.SQL: WARN
     org.hibernate.type.descriptor.sql: WARN
+
+security:
+  systemId: 1
+  apiKey: uLCMTMdPOcdy4HTag9GpSTLSJAovBEFgbGrQR6R2fkMXL2mtKeyDRqi8lNOb5ar1fLN7HZGPttqtNZ5h4Vf8WmQuJinAqnWAqfNyNhPCVDN2xCkUFtGnkqO88vQz6HUr
+  jwt:
+    secret: "u6F1v9Hq4pRZ2eK1tGWs7C9qDb48NdP7u1Qx3Ls8UPI="
+    expiration: 3600

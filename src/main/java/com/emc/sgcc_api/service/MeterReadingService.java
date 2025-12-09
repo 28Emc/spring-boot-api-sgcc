@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.MeterReadingCreateDto;
 import com.emc.sgcc_api.dto.MeterReadingResponseDto;
 import com.emc.sgcc_api.dto.MeterReadingUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.MeterReading;
 import com.emc.sgcc_api.mapper.MeterReadingMapper;
 import com.emc.sgcc_api.repository.MeterReadingRepository;
@@ -22,6 +24,7 @@ public class MeterReadingService {
     private final MeterReadingRepository meterReadingRepository;
     private final MeterReadingMapper mapper;
 
+    @Auditable(entity = "MeterReading", action = AuditAction.CREATE)
     public MeterReadingResponseDto create(MeterReadingCreateDto dto) {
         MeterReading entity = mapper.toEntity(dto);
         return mapper.toResponse(meterReadingRepository.save(entity));
@@ -54,6 +57,7 @@ public class MeterReadingService {
                 .map(mapper::toResponse);
     }
 
+    @Auditable(entity = "MeterReading", action = AuditAction.UPDATE)
     public MeterReadingResponseDto update(Long id, MeterReadingUpdateDto dto) {
         MeterReading entity = meterReadingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Meter reading not found"));
@@ -63,6 +67,7 @@ public class MeterReadingService {
         return mapper.toResponse(meterReadingRepository.save(entity));
     }
 
+    @Auditable(entity = "MeterReading", action = AuditAction.DELETE)
     public void delete(Long id) {
         meterReadingRepository.deleteById(id);
     }

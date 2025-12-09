@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.MeterCreateDto;
 import com.emc.sgcc_api.dto.MeterResponseDto;
 import com.emc.sgcc_api.dto.MeterUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.Location;
 import com.emc.sgcc_api.entity.Meter;
 import com.emc.sgcc_api.entity.ServiceEntity;
@@ -26,6 +28,7 @@ public class MeterService {
     private final LocationRepository locationRepository;
     private final MeterMapper mapper;
 
+    @Auditable(entity = "Meter", action = AuditAction.CREATE)
     public MeterResponseDto create(MeterCreateDto dto) {
         if (meterRepository.existsByCode(dto.getCode())) {
             throw new IllegalArgumentException("Meter code already exists");
@@ -60,6 +63,7 @@ public class MeterService {
                 .map(mapper::toResponse);
     }
 
+    @Auditable(entity = "Meter", action = AuditAction.UPDATE)
     public MeterResponseDto update(Long id, MeterUpdateDto dto) {
         Meter meter = meterRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Meter not found"));
@@ -69,6 +73,7 @@ public class MeterService {
         return mapper.toResponse(meterRepository.save(meter));
     }
 
+    @Auditable(entity = "Meter", action = AuditAction.DELETE)
     public void delete(Long id) {
         meterRepository.deleteById(id);
     }

@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.ServiceCreateDto;
 import com.emc.sgcc_api.dto.ServiceResponseDto;
 import com.emc.sgcc_api.dto.ServiceUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.ServiceEntity;
 import com.emc.sgcc_api.mapper.ServiceMapper;
 import com.emc.sgcc_api.repository.ServiceRepository;
@@ -20,6 +22,7 @@ public class ServiceService {
     private final ServiceRepository serviceRepository;
     private final ServiceMapper mapper;
 
+    @Auditable(entity = "ServiceEntity", action = AuditAction.CREATE)
     public ServiceResponseDto create(ServiceCreateDto dto) {
         ServiceEntity entity = mapper.toEntity(dto);
         return mapper.toResponse(serviceRepository.save(entity));
@@ -35,6 +38,7 @@ public class ServiceService {
                         .orElseThrow(() -> new EntityNotFoundException("Service not found")));
     }
 
+    @Auditable(entity = "ServiceEntity", action = AuditAction.UPDATE)
     public ServiceResponseDto update(Long id, ServiceUpdateDto dto) {
         ServiceEntity existing = serviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Service not found"));
@@ -44,6 +48,7 @@ public class ServiceService {
         return mapper.toResponse(serviceRepository.save(existing));
     }
 
+    @Auditable(entity = "ServiceEntity", action = AuditAction.DELETE)
     public void delete(Long id) {
         serviceRepository.deleteById(id);
     }

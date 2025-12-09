@@ -17,9 +17,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        #format_sql: true
 
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
+#logging:
+  #level:
+    #org.hibernate.SQL: DEBUG
+    #org.hibernate.type.descriptor.sql: TRACE
+
+security:
+  systemId: 1
+  apiKey: uLCMTMdPOcdy4HTag9GpSTLSJAovBEFgbGrQR6R2fkMXL2mtKeyDRqi8lNOb5ar1fLN7HZGPttqtNZ5h4Vf8WmQuJinAqnWAqfNyNhPCVDN2xCkUFtGnkqO88vQz6HUr
+  jwt:
+    secret: "u6F1v9Hq4pRZ2eK1tGWs7C9qDb48NdP7u1Qx3Ls8UPI="
+    expiration: 3600

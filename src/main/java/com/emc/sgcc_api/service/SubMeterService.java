@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.SubMeterCreateDto;
 import com.emc.sgcc_api.dto.SubMeterResponseDto;
 import com.emc.sgcc_api.dto.SubMeterUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.ServiceEntity;
 import com.emc.sgcc_api.entity.SubMeter;
 import com.emc.sgcc_api.entity.Tenant;
@@ -26,6 +28,7 @@ public class SubMeterService {
     private final ServiceRepository serviceRepository;
     private final SubMeterMapper mapper;
 
+    @Auditable(entity = "SubMeter", action = AuditAction.CREATE)
     public SubMeterResponseDto create(SubMeterCreateDto dto) {
         if (subMeterRepository.existsByCode(dto.getCode())) {
             throw new IllegalArgumentException("Sub-meter code already exists");
@@ -60,6 +63,7 @@ public class SubMeterService {
                 .map(mapper::toResponse);
     }
 
+    @Auditable(entity = "SubMeter", action = AuditAction.UPDATE)
     public SubMeterResponseDto update(Long id, SubMeterUpdateDto dto) {
         SubMeter subMeter = subMeterRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Sub-meter not found"));
@@ -69,6 +73,7 @@ public class SubMeterService {
         return mapper.toResponse(subMeterRepository.save(subMeter));
     }
 
+    @Auditable(entity = "SubMeter", action = AuditAction.DELETE)
     public void delete(Long id) {
         subMeterRepository.deleteById(id);
     }

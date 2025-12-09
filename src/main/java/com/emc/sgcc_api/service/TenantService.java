@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.TenantCreateDto;
 import com.emc.sgcc_api.dto.TenantResponseDto;
 import com.emc.sgcc_api.dto.TenantUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.Location;
 import com.emc.sgcc_api.entity.Tenant;
 import com.emc.sgcc_api.mapper.TenantMapper;
@@ -23,6 +25,7 @@ public class TenantService {
     private final LocationRepository locationRepository;
     private final TenantMapper mapper;
 
+    @Auditable(entity = "Tenant", action = AuditAction.CREATE)
     public TenantResponseDto create(TenantCreateDto dto) {
         Location location = locationRepository.findById(dto.getLocationId())
                 .orElseThrow(() -> new EntityNotFoundException("Location not found"));
@@ -50,6 +53,7 @@ public class TenantService {
         return mapper.toResponse(entity);
     }
 
+    @Auditable(entity = "Tenant", action = AuditAction.UPDATE)
     public TenantResponseDto update(Long id, TenantUpdateDto dto) {
         Tenant entity = tenantRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tenant not found"));
@@ -60,6 +64,7 @@ public class TenantService {
         return mapper.toResponse(updated);
     }
 
+    @Auditable(entity = "Tenant", action = AuditAction.DELETE)
     public void delete(Long id) {
         tenantRepository.deleteById(id);
     }

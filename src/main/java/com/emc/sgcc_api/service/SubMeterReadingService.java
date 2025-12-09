@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.SubMeterReadingCreateDto;
 import com.emc.sgcc_api.dto.SubMeterReadingResponseDto;
 import com.emc.sgcc_api.dto.SubMeterReadingUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.SubMeter;
 import com.emc.sgcc_api.entity.SubMeterReading;
 import com.emc.sgcc_api.mapper.SubMeterReadingMapper;
@@ -23,6 +25,7 @@ public class SubMeterReadingService {
     private final SubMeterRepository subMeterRepository;
     private final SubMeterReadingMapper mapper;
 
+    @Auditable(entity = "SubMeterReading", action = AuditAction.CREATE)
     public SubMeterReadingResponseDto create(SubMeterReadingCreateDto reading) {
         SubMeterReading entity = mapper.toEntity(reading);
         SubMeterReading savedReading = repository.save(entity);
@@ -49,6 +52,7 @@ public class SubMeterReadingService {
                 .orElseThrow(() -> new EntityNotFoundException("Sub-meter reading not found")));
     }
 
+    @Auditable(entity = "SubMeterReading", action = AuditAction.UPDATE)
     public SubMeterReadingResponseDto update(Long id, SubMeterReadingUpdateDto readingDetails) {
         SubMeterReading reading = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Sub-meter reading not found"));
@@ -62,6 +66,7 @@ public class SubMeterReadingService {
         return mapper.toResponse(repository.save(reading));
     }
 
+    @Auditable(entity = "SubMeterReading", action = AuditAction.DELETE)
     public void delete(Long id) {
         repository.deleteById(id);
     }

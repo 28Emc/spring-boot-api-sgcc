@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.InvoiceCreateDto;
 import com.emc.sgcc_api.dto.InvoiceResponseDto;
 import com.emc.sgcc_api.dto.InvoiceUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.Invoice;
 import com.emc.sgcc_api.entity.Meter;
 import com.emc.sgcc_api.mapper.InvoiceMapper;
@@ -32,6 +34,7 @@ public class InvoiceService {
                 .orElseThrow(() -> new EntityNotFoundException("Invoice not found")));
     }
 
+    @Auditable(entity = "Invoice", action = AuditAction.CREATE)
     public InvoiceResponseDto create(InvoiceCreateDto dto) {
         Meter meter = meterRepository.findById(dto.getMeterId())
                 .orElseThrow(() -> new EntityNotFoundException("Meter not found"));
@@ -45,6 +48,7 @@ public class InvoiceService {
         return mapper.toResponse(invoiceRepository.save(invoice));
     }
 
+    @Auditable(entity = "Invoice", action = AuditAction.UPDATE)
     public InvoiceResponseDto update(Long id, InvoiceUpdateDto dto) {
         Invoice existing = invoiceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invoice not found"));
@@ -60,6 +64,7 @@ public class InvoiceService {
         return mapper.toResponse(invoiceRepository.save(existing));
     }
 
+    @Auditable(entity = "Invoice", action = AuditAction.DELETE)
     public void delete(Long id) {
         invoiceRepository.deleteById(id);
     }

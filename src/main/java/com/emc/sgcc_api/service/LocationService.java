@@ -1,8 +1,10 @@
 package com.emc.sgcc_api.service;
 
+import com.emc.sgcc_api.config.Auditable;
 import com.emc.sgcc_api.dto.LocationCreateDto;
 import com.emc.sgcc_api.dto.LocationResponseDto;
 import com.emc.sgcc_api.dto.LocationUpdateDto;
+import com.emc.sgcc_api.entity.AuditAction;
 import com.emc.sgcc_api.entity.Location;
 import com.emc.sgcc_api.mapper.LocationMapper;
 import com.emc.sgcc_api.repository.LocationRepository;
@@ -20,6 +22,7 @@ public class LocationService {
     private final LocationRepository locationRepository;
     private final LocationMapper mapper;
 
+    @Auditable(entity = "Location", action = AuditAction.CREATE)
     public LocationResponseDto create(LocationCreateDto dto) {
         Location entity = mapper.toEntity(dto);
         Location saved = locationRepository.save(entity);
@@ -37,6 +40,7 @@ public class LocationService {
         return mapper.toResponse(entity);
     }
 
+    @Auditable(entity = "Location", action = AuditAction.UPDATE)
     public LocationResponseDto update(Long id, LocationUpdateDto dto) {
         Location entity = locationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Location not found"));
@@ -47,6 +51,7 @@ public class LocationService {
         return mapper.toResponse(updated);
     }
 
+    @Auditable(entity = "Location", action = AuditAction.DELETE)
     public void delete(Long id) {
         locationRepository.deleteById(id);
     }
