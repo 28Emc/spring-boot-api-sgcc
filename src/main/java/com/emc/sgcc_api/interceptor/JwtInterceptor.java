@@ -25,6 +25,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) {
+        if (req.getRequestURI().endsWith("/health-check")) {
+            return true;
+        }
 
         String header = req.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
