@@ -17,8 +17,27 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(apiKeyInterceptor);
-        registry.addInterceptor(systemIdInterceptor);
-        registry.addInterceptor(jwtInterceptor);
+        String[] swaggerExcludePatterns = {
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/v1/api-docs",
+                "/v1/api-docs/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/sgcc/v1/api-docs",
+                "/sgcc/v1/api-docs/**"
+        };
+
+        // Excluir rutas de documentación de Swagger del interceptor ApiKey
+        registry.addInterceptor(apiKeyInterceptor)
+                .excludePathPatterns(swaggerExcludePatterns);
+
+        // Excluir rutas de documentación de Swagger del interceptor SystemId
+        registry.addInterceptor(systemIdInterceptor)
+                .excludePathPatterns(swaggerExcludePatterns);
+
+        // Excluir rutas de documentación de Swagger del interceptor JWT
+        registry.addInterceptor(jwtInterceptor)
+                .excludePathPatterns(swaggerExcludePatterns);
     }
 }
