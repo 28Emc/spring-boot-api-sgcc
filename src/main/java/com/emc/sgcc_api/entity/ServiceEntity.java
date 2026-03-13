@@ -3,6 +3,7 @@ package com.emc.sgcc_api.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,6 +18,9 @@ public class ServiceEntity {
     private String name;
 
     private String description;
+
+    @Column(name = "tarifa_actual", precision = 18, scale = 2)
+    private BigDecimal tarifaActual;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();

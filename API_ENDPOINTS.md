@@ -16,6 +16,7 @@ Guía completa de todos los endpoints disponibles en la API SGCC.
 8. [Allocations (Asignaciones de Gastos)](#allocations-asignaciones-de-gastos)
 9. [SubMeters (Medidores Secundarios)](#submeters-medidores-secundarios)
 10. [SubMeter Readings (Lecturas de Sub-medidores)](#submeter-readings-lecturas-de-sub-medidores)
+11. [Reports (Reportes de Inquilinos)](#reports-reportes-de-inquilinos)
 
 ---
 
@@ -406,18 +407,16 @@ GET /services?page=0&size=20
     {
       "id": 1,
       "name": "Agua",
-      "code": "WATER",
       "description": "Servicio de agua potable",
-      "unitOfMeasure": "m³",
+      "tarifaActual": 8.50,
       "createdAt": "2026-01-01T00:00:00",
       "updatedAt": "2026-01-19T10:30:00"
     },
     {
       "id": 2,
       "name": "Electricidad",
-      "code": "ELECTRICITY",
       "description": "Servicio de electricidad",
-      "unitOfMeasure": "kWh",
+      "tarifaActual": 0.85,
       "createdAt": "2026-01-01T00:00:00",
       "updatedAt": "2026-01-19T10:30:00"
     }
@@ -629,6 +628,32 @@ Content-Type: application/json
 ```
 
 **Respuesta (201 Created)**
+
+### Crear factura con cálculo automático
+```http
+POST /invoices/calcular
+Content-Type: application/json
+
+{
+  "meterId": 1,
+  "periodStart": "2024-01-01",
+  "periodEnd": "2024-01-31",
+  "currency": "PEN"
+}
+```
+
+**Respuesta (201 Created)**
+```json
+{
+  "id": 1,
+  "meterId": 1,
+  "periodStart": "2024-01-01",
+  "periodEnd": "2024-01-31",
+  "totalAmount": 51.00,
+  "currency": "PEN",
+  "issuedAt": "2026-03-12T10:00:00"
+}
+```
 
 ### Actualizar factura
 ```http
@@ -854,6 +879,114 @@ DELETE /sub-meter-readings/{id}
 
 ---
 
+## Reports (Reportes de Inquilinos)
+
+Genera reportes mensuales con totales por servicio para inquilinos.
+
+### Obtener reporte mensual de inquilino
+```http
+GET /reports/tenants/{tenantId}/{month}/{year}
+```
+
+**Parámetros:**
+- `tenantId` (requerido): ID del inquilino
+- `month` (requerido): Mes del reporte (1-12)
+- `year` (requerido): Año del reporte
+
+**Respuesta (200 OK)**
+```json
+{
+  "tenantId": 1,
+  "tenantName": "Peluquería",
+  "month": 1,
+  "year": 2024,
+  "reportDate": "2026-03-12",
+  "totalGeneral": 40.80,
+  "serviceTotals": [
+    {
+      "serviceId": 1,
+      "serviceName": "LUZ",
+      "totalAmount": 25.50,
+      "currency": "PEN",
+      "allocations": [
+        {
+          "allocationId": 1,
+          "serviceName": "LUZ",
+          "amount": 25.50,
+          "percentage": 50.0,
+          "periodStart": "2024-01-01",
+          "periodEnd": "2024-01-31"
+        }
+      ]
+    },
+    {
+      "serviceId": 2,
+      "serviceName": "AGUA",
+      "totalAmount": 15.30,
+      "currency": "PEN",
+      "allocations": [
+        {
+          "allocationId": 2,
+          "serviceName": "AGUA",
+          "amount": 15.30,
+          "percentage": 30.0,
+          "periodStart": "2024-01-01",
+          "periodEnd": "2024-01-31"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Obtener reporte del mes actual
+```http
+GET /reports/tenants/{tenantId}/current
+```
+
+**Parámetros:**
+- `tenantId` (requerido): ID del inquilino
+
+**Respuesta (200 OK)**
+```json
+{
+  "tenantId": 1,
+  "tenantName": "Peluquería",
+  "month": 3,
+  "year": 2026,
+  "reportDate": "2026-03-12",
+  "totalGeneral": 0.00,
+  "serviceTotals": []
+}
+```
+
+### Obtener servicios activos
+```http
+GET /reports/services/active
+```
+
+**Respuesta (200 OK)**
+```json
+[
+  {
+    "id": 1,
+    "name": "LUZ",
+    "description": "Servicio de Electricidad",
+    "tarifaActual": 0.85,
+    "createdAt": "2026-01-01T00:00:00"
+  },
+  {
+    "id": 2,
+    "name": "AGUA",
+    "description": "Servicio de Agua",
+    "tarifaActual": 8.50,
+    "createdAt": "2026-01-01T00:00:00"
+  }
+]
+```
+
+---
+
 ## 🔐 Autenticación y Seguridad
 
 Todos los endpoints requieren validación a través de:
@@ -898,4 +1031,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-**Última actualización**: 2026-01-19
+**Última actualización**: 2026-03-12

@@ -59,6 +59,20 @@ public class InvoicesController {
         return service.create(dto);
     }
 
+    @PostMapping("/calcular")
+    @Operation(summary = "Crear factura con cálculo automático",
+               description = "Crea una factura calculando automáticamente el monto total basado en las lecturas del medidor y la tarifa del servicio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Factura creada y calculada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos o lecturas insuficientes"),
+            @ApiResponse(responseCode = "404", description = "Medidor no encontrado")
+    })
+    public InvoiceResponseDto createWithCalculation(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Datos básicos de la factura (el monto se calcula automáticamente)", required = true)
+            @RequestBody InvoiceCreateDto dto) {
+        return service.createWithCalculation(dto);
+    }
+
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar factura", description = "Modifica los datos de una factura existente")
     @ApiResponses(value = {
@@ -86,6 +100,3 @@ public class InvoicesController {
         service.delete(id);
     }
 }
-
-
-

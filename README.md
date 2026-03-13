@@ -14,8 +14,10 @@ Una **API RESTful robusta** construida con Spring Boot 4.0 para la gestión inte
 * **Gestión Integral de Medidores**: Administración completa del ciclo de vida de medidores (agua, electricidad, gas, etc.)
 * **Registro de Lecturas**: Sistema de captura y seguimiento de lecturas periódicas para cálculo de consumos
 * **Gestión de Ubicaciones**: Soporte para múltiples ubicaciones/edificios con medidores y inquilinos asociados
-* **Facturación Automática**: Generación de facturas basadas en consumos medidos
-* **Distribución de Gastos**: Sistema de asignaciones inteligente para distribuir costos entre inquilinos
+* **Facturación Automática**: Generación de facturas con cálculo automático basado en lecturas y tarifas configuradas
+* **Configuración de Tarifas**: Gestión de tarifas por servicio para cálculos precisos de montos
+* **Distribución Manual de Gastos**: Sistema de asignaciones para distribuir costos entre inquilinos según criterios definidos
+* **Reportes Dinámicos**: API de reportes escalable que genera informes mensuales por inquilino con totales por servicio
 * **Sub-medidores**: Gestión de medidores secundarios para desglose granular de consumos
 * **Auditoría**: Registro detallado de cambios en las entidades (quién, qué, cuándo)
 * **Seguridad Multicapa**: API Key, System ID y autenticación JWT integrados
@@ -218,5 +220,4 @@ La documentación interactiva está disponible en Swagger UI durante el desarrol
 ## 📄 Licencia
 
 Este proyecto está bajo la licencia [Apache License 2.0](LICENSE).
-
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-19T21:33:03-0500",
+    date = "2026-03-12T18:52:51-0500",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-9.2.1.jar, environment: Java 25 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,7 @@ public class ServiceMapperImpl implements ServiceMapper {
 
         serviceEntity.setName( dto.getName() );
         serviceEntity.setDescription( dto.getDescription() );
+        serviceEntity.setTarifaActual( dto.getTarifaActual() );
 
         serviceEntity.setCreatedAt( java.time.LocalDateTime.now() );
 
@@ -39,6 +40,7 @@ public class ServiceMapperImpl implements ServiceMapper {
 
         entity.setName( dto.getName() );
         entity.setDescription( dto.getDescription() );
+        entity.setTarifaActual( dto.getTarifaActual() );
     }
 
     @Override
@@ -52,6 +54,7 @@ public class ServiceMapperImpl implements ServiceMapper {
         serviceResponseDto.setId( entity.getId() );
         serviceResponseDto.setName( entity.getName() );
         serviceResponseDto.setDescription( entity.getDescription() );
+        serviceResponseDto.setTarifaActual( entity.getTarifaActual() );
         serviceResponseDto.setCreatedAt( entity.getCreatedAt() );
 
         return serviceResponseDto;

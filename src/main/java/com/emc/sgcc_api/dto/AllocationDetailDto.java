@@ -1,24 +1,18 @@
 package com.emc.sgcc_api.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class InvoiceCreateDto {
-    @NotNull
-    private Long meterId;
-
-    @NotNull
+public class AllocationDetailDto {
+    private Long allocationId;
+    private Long invoiceId;
+    private String serviceName;
     private LocalDate periodStart;
-
-    @NotNull
     private LocalDate periodEnd;
-
-    @NotNull
-    private BigDecimal totalAmount;
-
+    private BigDecimal amount;
+    private BigDecimal percentage;
     private String currency;
 }

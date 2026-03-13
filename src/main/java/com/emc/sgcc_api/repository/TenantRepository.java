@@ -13,4 +13,6 @@ public interface TenantRepository extends JpaRepository<@NotNull Tenant, @NotNul
     Page<@NotNull Tenant> findByLocationId(Pageable pageable, Long locationId);
 
     Page<@NotNull Tenant> findByLocationIdAndActiveTrue(Pageable pageable, Long locationId);
+
+    List<Tenant> findByLocationId(Long locationId);
 }

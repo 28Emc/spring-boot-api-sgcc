@@ -6,11 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface SubMeterRepository extends JpaRepository<@NotNull SubMeter, @NotNull Long> {
 
     Page<@NotNull SubMeter> findByTenantId(Pageable pageable, Long tenantId);
 
     Page<@NotNull SubMeter> findByServiceId(Pageable pageable, Long serviceId);
+
+    List<SubMeter> findByTenantId(Long tenantId);
 
     boolean existsByCode(String code);
 }
